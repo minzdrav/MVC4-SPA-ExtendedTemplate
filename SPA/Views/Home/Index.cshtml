@@ -13,31 +13,15 @@
     <p class="error" data-bind="text: error"></p>
     <button data-bind="click: addTodoList">Add Todo list</button>
 
-    <section id="lists" data-bind="foreach: todoLists, visible: todoLists().length > 0">
-        <article class="todoList">
-            <header>
-                <form data-bind="validate: true">
-                    <input class="required" data-bind="value: Title, selected: IsEditingListTitle, blurOnEnter: true" />
-                </form>
-            </header>
-
-            <a href="#" class="deletelist" data-bind="click: $parent.deleteTodoList">X</a>
-
-            <ul data-bind="foreach: Todos">
-                <li>
-                    <input type="checkbox" data-bind="checked: IsDone" />
-                    <input type="text" data-bind="value: Title, disable: IsDone, blurOnEnter: true" />
-                    <a href="#" data-bind="click: $parent.deleteTodo">X</a>
-                    <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
-                </li>
-            </ul>
-
-            <form data-bind="submit: addTodo">
-                <input class="addTodo" type="text" data-bind="value: NewTodoTitle, placeholder: 'Type here to add', blurOnEnter: true, event: { blur: addTodo }" />
-            </form>
-
-            <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
-        </article>
+    <section id="lists" data-bind="foreach: todoLists, visible: todoLists().length > 0 && selectedListId() == -1">
+        <button data-bind='click: $parent.showList'>Show list <span data-bind="text: $index"> </span></button>
+        
+        @RenderPage("_TodoList.cshtml")
+    </section>
+    
+    <section id="list" data-bind="with: selectedList, visible: todoLists().length > 0 && selectedListId() != -1">
+        <button data-bind='click: $parent.showAll'>Show all</button>
+        @RenderPage("_TodoList.cshtml")
     </section>
 }
 else

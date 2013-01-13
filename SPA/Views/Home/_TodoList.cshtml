@@ -1,0 +1,24 @@
+﻿<article class="todoList">
+    <header>
+        <form data-bind="validate: true">
+            <input class="required" data-bind="value: Title, selected: IsEditingListTitle, blurOnEnter: true" />
+        </form>
+    </header>
+
+    <a href="#" class="deletelist" data-bind="click: $parent.deleteTodoList">X</a>
+
+    <ul data-bind="foreach: Todos">
+        <li>
+            <input type="checkbox" data-bind="checked: IsDone" />
+            <input type="text" data-bind="value: Title, disable: IsDone, blurOnEnter: true" />
+            <a href="#" data-bind="click: $parent.deleteTodo">X</a>
+            <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
+        </li>
+    </ul>
+
+    <form data-bind="submit: addTodo">
+        <input class="addTodo" type="text" data-bind="value: NewTodoTitle, placeholder: 'Type here to add', blurOnEnter: true, event: { blur: addTodo }" />
+    </form>
+
+    <p class="error" data-bind="visible: ErrorMessage, text: ErrorMessage"></p>
+</article>
