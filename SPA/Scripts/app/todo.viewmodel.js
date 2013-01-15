@@ -29,6 +29,21 @@
             }
         },
         
+        // search
+        searchText = ko.observable(""),
+        filteredTodoLists = ko.computed(function () {
+            var all = todoLists();
+            var filter = searchText();
+            if (filter.length > 0) {
+                var filtered = _.filter(all, function(list) {
+                    return list.Title().indexOf(filter) >= 0;
+                });
+                return filtered;
+            } else {
+                return all;
+            }
+        }),
+
         // Navigation
         selectedListId = ko.observable(-1),
         selectedList = ko.computed(function () {
@@ -56,6 +71,8 @@
         error: error,
         addTodoList: addTodoList,
         deleteTodoList: deleteTodoList,
+        searchText: searchText,
+        filteredTodoLists: filteredTodoLists,
         selectedListId: selectedListId,
         selectedList: selectedList,
         selectList: selectList,

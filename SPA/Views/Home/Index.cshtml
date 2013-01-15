@@ -13,7 +13,11 @@
     <p class="error" data-bind="text: error"></p>
     <button data-bind="click: addTodoList">Add Todo list</button>
 
-    <section id="lists" data-bind="foreach: todoLists, visible: todoLists().length > 0 && selectedListId() == -1">
+    <input class="filter-box"
+           data-bind="value: searchText, valueUpdate: 'afterkeydown', visible: todoLists().length > 0 && selectedListId() == -1"
+           placeholder="filter by list name" type="text" />
+    
+    <section id="lists" data-bind="foreach: filteredTodoLists, visible: todoLists().length > 0 && selectedListId() == -1">
         <button data-bind='click: $parent.showList'>Show list <span data-bind="text: $index"> </span></button>
         
         @RenderPage("_TodoList.cshtml")
