@@ -22,10 +22,24 @@ window.todoApp.datacontext = (function (ko) {
         saveChangedTodoItem: saveChangedTodoItem,
         saveChangedTodoList: saveChangedTodoList,
         deleteTodoItem: deleteTodoItem,
-        deleteTodoList: deleteTodoList
+        deleteTodoList: deleteTodoList,
+        restoreFromStorage: restoreFromStorage,
+        saveToStorage: saveToStorage
     };
 
     return datacontext;
+
+    function restoreFromStorage(todoListsObservable) {
+        var data = amplify.store("spa-todo-storage");
+        if (data) {
+            var mappedTodoLists = $.map(data, function(list) { return new createTodoList(list); });
+            todoListsObservable(mappedTodoLists);
+        }
+    }
+    
+    function saveToStorage(data) {
+        amplify.store("spa-todo-storage", data);
+    }
 
     function getTodoLists(todoListsObservable, errorObservable) {
         return $.Deferred(function(def) {
@@ -38,6 +52,7 @@ window.todoApp.datacontext = (function (ko) {
             function getSucceeded(data) {
                 var mappedTodoLists = $.map(data, function(list) { return new createTodoList(list); });
                 todoListsObservable(mappedTodoLists);
+                saveToStorage(data);
                 def.resolve(data);
             }
 

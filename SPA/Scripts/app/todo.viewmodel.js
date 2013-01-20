@@ -64,6 +64,7 @@
             sammy.setLocation("#/list/" + todoList.TodoListId);
         };
 
+    datacontext.restoreFromStorage(todoLists);
     datacontext.getTodoLists(todoLists, error); // load TodoLists
 
     return {
